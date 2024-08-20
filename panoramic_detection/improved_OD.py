@@ -1250,8 +1250,13 @@ def MBR_bboxes(bboxes):
 # function used to filter the bboxes according to the classes we need
 def filter_classes(bboxes_all, classes_all, scores_all, class_needed):
     bboxes_all = bboxes_all.tolist()
+    
     classes_all = classes_all.tolist()
+    classes_all = classes_all if type(classes_all) == list else [classes_all] # scalar tensor.tolist() produces int, not list
+    
     scores_all = scores_all.tolist()
+    scores_all = scores_all if type(scores_all) == list else [scores_all]
+   
     # remove the bboxes which are not belong to the needed classes from the lists
     for i in range(len(classes_all), 0, -1):
         if classes_all[i - 1] not in class_needed:
@@ -1468,7 +1473,7 @@ def predict_one_frame(
 
         # do NMS on the output bboxes again to get the index of the boxes which should be kept
         keep = batched_nms(
-            torch.tensor(bboxes_all),
+            torch.tensor(bboxes_all) if torch.tensor(bboxes_all).shape[-1] == 4 else torch.tensor([[0, 0, 0, 0]]), # this is not an elegant fix but we need this to avoid the assertion error further on.
             torch.tensor(scores_all),
             torch.tensor(classes_all),
             0.3,

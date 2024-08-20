@@ -46,17 +46,21 @@ The library should be run under Python 3.3+ with the following libraries install
 
 1. First, clone the repository:
 ```
-git clone https://github.com/cuppp1998/360_object_tracking.git
+git clone https://github.com/ilyankou/360_object_tracking
 ```
-2. To install all the dependencies (except Detectron2), run the following command in a new conda environment:
+2. To install all the dependencies (except Detectron2), run the following command in a new conda environment called, for example, `360`:
 ```
-cd 360_object_tracking
+conda create --name 360 -c conda-forge python=3.8
+conda install pip
 pip install -r requirements.txt
 ```
 3. Since in the new versions of Detectron2 (updated after Aug 5, 2022), some APIs have been modified, here we install an old version of it:
 ```
 pip install -e git+https://github.com/facebookresearch/detectron2.git@5aeb252b194b93dc2879b4ac34bc51a31b5aee13#egg=detectron2
+
+pip install pillow==9.5.0 # see https://github.com/facebookresearch/detectron2/issues/5010#issuecomment-1752284625
 ```
+
 4. Download the pre-trained ReID network used in DeepSORT:
 ```
 cd deep_sort/deep/checkpoint
